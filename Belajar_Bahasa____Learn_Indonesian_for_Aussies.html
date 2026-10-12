@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Belajar Bahasa! — Indonesian for Aussies</title>
+
+  <style>
+    /* Zero-dependency pure CSS: instant mobile rendering without external CDN lag */
+    :root {
+      --primary: #047857;       /* Aussie Green / Rainforest */
+      --primary-dark: #065f46;
+      --primary-light: #d1fae5;
+      --accent: #d97706;        /* Golden Wattle / Amber */
+      --accent-light: #fef3c7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --surface: #ffffff;
+      --bg: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 6px 10px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      min-height: 98vh;
+    }
+
+    /* Top Navigation & App Branding */
+    header {
+      text-align: center;
+      padding: 4px 0 6px 0;
+    }
+
+    .flag-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--accent-light);
+      color: #92400e;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 2px;
+      border: 1px solid #fde68a;
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary);
+      display: block;
+    }
+
+    /* Aussie Etiquette Callout Banner */
+    .aussie-tip-banner {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 6px 10px;
+      margin-top: 5px;
+      font-size: 11px;
+      color: #1e40af;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      line-height: 1.35;
+    }
+
+    .aussie-tip-banner b {
+      color: #1d4ed8;
+    }
+
+    /* Main Segmented Switcher */
+    .mode-switch {
+      display: flex;
+      background: #e2e8f0;
+      border-radius: 10px;
+      padding: 2.5px;
+      margin: 8px 0 6px 0;
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 7px 6px;
+      border-radius: 8px;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      color: #475569;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .mode-btn.active {
+      background: #ffffff;
+      color: var(--primary-dark);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
+
+    /* Category Pill Scroller */
+    .cat-wrapper {
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      margin-bottom: 6px;
+      padding-bottom: 2px;
+    }
+    .cat-wrapper::-webkit-scrollbar { display: none; }
+
+    .cat-nav {
+      display: flex;
+      gap: 5px;
+      width: max-content;
+    }
+
+    .cat-btn {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .cat-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 6px rgba(4, 120, 87, 0.25);
+    }
+
+    /* ================= FLASHCARD MODE ================= */
+    #flashcardView {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .flashcard-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 10px;
+      margin-bottom: 8px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .score-stats {
+      display: flex;
+      gap: 6px;
+    }
+
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: 11px;
+    }
+    .stat-pill.success {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+    .stat-pill.miss {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .direction-toggle-btn {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .card-shell {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .flashcard {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 250px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .badge-category {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--accent-light);
+      color: #92400e;
+    }
+
+    .card-role-label {
+      font-size: 9.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+    }
+
+    .card-body {
+      padding: 10px 0;
+      text-align: center;
+      margin: auto 0;
+      width: 100%;
+    }
+
+    .card-primary-text {
+      font-size: 18.5px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.28;
+      margin-bottom: 4px;
+    }
+
+    .card-hint-text {
+      font-size: 11.5px;
+      color: #64748b;
+      line-height: 1.35;
+    }
+
+    .flip-invitation {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    /* Flip Answer Box */
+    .revealed-answer-box {
+      display: none;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 10px 8px;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .target-text {
+      font-size: 19px;
+      font-weight: 800;
+      color: #065f46;
+      line-height: 1.25;
+      margin-bottom: 3px;
+    }
+
+    .phonetic-guide {
+      font-size: 12px;
+      font-weight: 600;
+      color: #047857;
+      font-style: italic;
+      margin-bottom: 8px;
+    }
+
+    .audio-actions-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-audio-pill {
+      background: #ffffff;
+      border: 1px solid #6ee7b7;
+      color: #047857;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-audio-pill:active {
+      transform: scale(0.96);
+      background: #ecfdf5;
+    }
+
+    .btn-flip-action {
+      width: 100%;
+      background: linear-gradient(135deg, #047857, #065f46);
+      color: #ffffff;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(4, 120, 87, 0.2);
+      margin-top: 8px;
+    }
+
+    .grading-row {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .btn-grade {
+      padding: 10px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      border: none;
+    }
+    .btn-grade.miss {
+      background: var(--danger-light);
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+    .btn-grade.gotit {
+      background: linear-gradient(135deg, #047857, #065f46);
+      color: #ffffff;
+    }
+
+    /* Finished View */
+    .complete-panel {
+      display: none;
+      background: #ffffff;
+      border: 1.5px solid #a7f3d0;
+      border-radius: var(--radius);
+      padding: 18px 12px;
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 250px;
+    }
+
+    .summary-stats {
+      display: flex;
+      gap: 10px;
+      margin: 12px 0;
+    }
+    .stat-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 12px;
+    }
+
+    .footer-tools {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      padding: 0 4px;
+    }
+
+    .btn-mini-tool {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    /* ================= PHRASEBOOK & DIRECTORY MODE ================= */
+    #directoryView {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .search-bar-wrap {
+      position: relative;
+      margin-bottom: 8px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 8px 12px 8px 30px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      font-size: 12px;
+      outline: none;
+    }
+    .search-input:focus {
+      border-color: var(--primary);
+    }
+
+    .search-icon-svg {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .pronunciation-aussie-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 10.5px;
+      color: #92400e;
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .phrase-list-scroll {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      max-height: calc(100vh - 225px);
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .phrase-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .phrase-card-content {
+      flex: 1;
+    }
+
+    .id-title-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .id-heading {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #065f46;
+      line-height: 1.25;
+    }
+
+    .id-time-tag {
+      font-size: 9.5px;
+      font-weight: 700;
+      background: #fef3c7;
+      color: #b45309;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .aussie-phonetic-sub {
+      font-size: 11px;
+      font-weight: 600;
+      color: #047857;
+      font-style: italic;
+      margin: 1px 0 2px 0;
+    }
+
+    .en-sub {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .cat-micro-pill {
+      display: inline-block;
+      font-size: 8.5px;
+      font-weight: 700;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-top: 3px;
+    }
+
+    .phrase-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 60px;
+    }
+
+    .btn-say-action {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+      border-radius: 8px;
+      padding: 4px 6px;
+      font-size: 10.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+    }
+    .btn-say-action:active {
+      transform: scale(0.96);
+      background: #d1fae5;
+    }
+
+    .btn-slow-action {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #475569;
+      border-radius: 8px;
+      padding: 3px 6px;
+      font-size: 9.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+    }
+    .btn-slow-action:active {
+      background: #f8fafc;
+    }
+
+    .empty-search {
+      text-align: center;
+      padding: 24px 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 9.5px;
+      color: #94a3b8;
+      padding: 6px 0 2px 0;
+      margin-top: auto;
+    }
+
+    #toastNotification {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.92);
+      color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Top Header -->
+    <header>
+      <div class="flag-badge">
+        <span>🇦🇺 Aussie Visitors</span>
+        <span>•</span>
+        <span>Widhya Asih Bali</span>
+        <span>🇮🇩</span>
+      </div>
+      <h1>Belajar Bahasa!</h1>
+      <span class="subtitle">Indonesian for Australian Guests & Volunteers</span>
+    </header>
+
+    <!-- Cultural Etiquette Callout -->
+    <div class="aussie-tip-banner">
+      <span>💡</span>
+      <div>
+        <b>Politeness Tip:</b> Use <b>Pak</b> (Mr/Sir) for male carers, <b>Ibu</b> (Mrs/Ma'am) for women. For teens and children, use <b>Adik</b> (younger brother/sister) or their name!
+      </div>
+    </div>
+
+    <!-- Segmented Mode Switcher (English-first) -->
+    <div class="mode-switch">
+      <button class="mode-btn active" id="tabFlashcardMode" onclick="switchAppMode('flashcard')">
+        <span>🃏</span> Flashcard Practice
+      </button>
+      <button class="mode-btn" id="tabDirectoryMode" onclick="switchAppMode('directory')">
+        <span>📖</span> Phrasebook & Say It
+      </button>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="cat-wrapper">
+      <nav class="cat-nav" aria-label="Category Selection">
+        <button class="cat-btn active" id="cat-all" onclick="selectCategory('all')">
+          🌟 All Topics (50)
+        </button>
+        <button class="cat-btn" id="cat-greetings" onclick="selectCategory('greetings')">
+          👋 Greetings & Times (10)
+        </button>
+        <button class="cat-btn" id="cat-intro" onclick="selectCategory('intro')">
+          🤝 Introductions (10)
+        </button>
+        <button class="cat-btn" id="cat-school" onclick="selectCategory('school')">
+          🎒 School & Dreams (10)
+        </button>
+        <button class="cat-btn" id="cat-numbers" onclick="selectCategory('numbers')">
+          🔢 Numbers & Essentials (10)
+        </button>
+        <button class="cat-btn" id="cat-social" onclick="selectCategory('social')">
+          🏡 Life at Widhya Asih (10)
+        </button>
+      </nav>
+    </div>
+
+    <!-- ==================== VIEW 1: FLASHCARD MODE ==================== -->
+    <section id="flashcardView">
+      
+      <!-- Toolbar with Direction Toggle and Scores -->
+      <div class="flashcard-toolbar">
+        <div class="score-stats">
+          <span class="stat-pill success" title="Cards Mastered">
+            <span>✅</span> <span id="valGotIt">0</span>
+          </span>
+          <span class="stat-pill miss" title="Still Practicing">
+            <span>❌</span> <span id="valMiss">0</span>
+          </span>
+        </div>
+
+        <button class="direction-toggle-btn" id="directionToggleBtn" onclick="toggleCardDirection()">
+          <span id="directionLabel">🇦🇺 English ➔ 🇮🇩 Indo</span> 🔄
+        </button>
+
+        <div style="color: var(--text-muted); font-size: 11px;" id="deckProgressText">
+          Card 1 of 50
+        </div>
+      </div>
+
+      <!-- Main Flashcard -->
+      <div class="card-shell">
+        <div class="flashcard" id="flashcardElement" onclick="handleCardTap(event)">
+          <div class="card-top">
+            <span class="badge-category" id="fcCategoryBadge">👋 Greetings & Times</span>
+            <span class="card-role-label" id="fcSideLabel">Question / Prompt</span>
+          </div>
+
+          <div class="card-body">
+            <div class="card-primary-text" id="fcPrimaryText">"Good morning"</div>
+            <div class="card-hint-text" id="fcHintText">Used until around 11:00 AM (6am – 11am)</div>
+
+            <div class="flip-invitation" id="fcTapBadge">
+              👆 Tap card to flip & check
+            </div>
+
+            <!-- Revealed Back Face -->
+            <div class="revealed-answer-box" id="fcAnswerBox">
+              <div class="target-text" id="fcTargetText">Selamat pagi</div>
+              <div class="phonetic-guide" id="fcPhoneticText">[seh-LAH-mat PAH-ghee] • Rolled 'R'</div>
+              
+              <div class="audio-actions-row">
+                <button class="btn-audio-pill" onclick="speakCurrentCard(1.0, event)">
+                  <span>🔊 Normal</span>
+                </button>
+                <button class="btn-audio-pill" style="border-color:#cbd5e1; color:#334155;" onclick="speakCurrentCard(0.75, event)">
+                  <span>🐢 Slow (0.75x)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flip Button -->
+          <button class="btn-flip-action" id="fcFlipBtn" onclick="revealCard(event)">
+            <span>👁️</span> Flip Card / Check Answer
+          </button>
+
+          <!-- English-First Self-Assessment Buttons -->
+          <div class="grading-row" id="fcGradingRow">
+            <button class="btn-grade miss" onclick="gradeAnswer(false, event)">
+              <span>❌ Still Learning</span>
+            </button>
+            <button class="btn-grade gotit" onclick="gradeAnswer(true, event)">
+              <span>✅ Got It!</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Completion Panel -->
+        <div class="complete-panel" id="fcCompletePanel">
+          <div style="font-size:32px; margin-bottom:4px;">🎉</div>
+          <h2 style="font-size: 16px; font-weight:800; margin-bottom: 3px;">Good on ya! Session Complete!</h2>
+          <p style="font-size: 11px; color: var(--text-muted);">Here is how you scored:</p>
+
+          <div class="summary-stats">
+            <div class="stat-card">
+              <div style="font-size:16px; font-weight:800; color:var(--primary);" id="statMastered">0</div>
+              <div style="font-size:9px; color:#64748b; font-weight:600;">GOT IT</div>
+            </div>
+            <div class="stat-card">
+              <div style="font-size:16px; font-weight:800; color:var(--danger);" id="statMissed">0</div>
+              <div style="font-size:9px; color:#64748b; font-weight:600;">REVIEWS</div>
+            </div>
+            <div class="stat-card">
+              <div style="font-size:16px; font-weight:800; color:#0f172a;" id="statAccuracy">0%</div>
+              <div style="font-size:9px; color:#64748b; font-weight:600;">ACCURACY</div>
+            </div>
+          </div>
+
+          <button class="btn-flip-action" style="width: 100%;" onclick="resetActiveDeck()">
+            🔄 Practice This Topic Again
+          </button>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="footer-tools">
+        <button class="btn-mini-tool" onclick="shuffleActiveDeck()">
+          🔀 Shuffle Cards
+        </button>
+        <button class="btn-mini-tool" onclick="resetActiveDeck()">
+          🔄 Reset Scores
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 2: PHRASEBOOK MODE ==================== -->
+    <section id="directoryView">
+      
+      <!-- Instant Search -->
+      <div class="search-bar-wrap">
+        <span class="search-icon-svg">🔍</span>
+        <input 
+          type="search" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Search in English or Indonesian (e.g. toilet, photo, name)..." 
+          oninput="handleSearch()"
+        />
+      </div>
+
+      <!-- Aussie Pronunciation Quick Rules -->
+      <div class="pronunciation-aussie-box">
+        <b>🇦🇺 Quick Aussie Pronunciation Guide:</b><br/>
+        • <b>'C' is ALWAYS 'CH'</b> (like <i>chair</i>) ➔ <i>cuci</i> is "CHOO-chee".<br/>
+        • <b>'G' is ALWAYS hard</b> (like <i>golf</i>), never soft.<br/>
+        • <b>'R' is rolled/tapped</b> with tip of tongue (never silent).
+      </div>
+
+      <!-- Scrollable List -->
+      <div class="phrase-list-scroll" id="phraseListWrap">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <footer>
+      Made for Australian volunteers and visitors supporting Widhya Asih homes 🇦🇺🇮🇩
+    </footer>
+
+  </div>
+
+  <div id="toastNotification"></div>
+
+  <script>
+    // 50 Curated Phrases specifically tuned for Aussies visiting Widhya Asih Bali
+    const PHRASES = [
+      // 1. GREETINGS & TIMES (10)
+      { 
+        id: 1, 
+        cat: 'greetings', 
+        catName: '👋 Greetings & Times', 
+        en: 'Good morning', 
+        timeTag: '6:00am – 11:00am',
+        hint: 'Use from sunrise until midday heat sets in.', 
+        id_text: 'Selamat pagi', 
+        phonetic: '[seh-LAH-mat PAH-ghee]' 
+      },
+      { 
+        id: 2, 
+        cat: 'greetings', 
+        catName: '👋 Greetings & Times', 
+        en: 'Good day / midday', 
+        timeTag: '11:00am – 3:00pm',
+        hint: 'Peak sun hours. Don\'t use pagi after 11am!', 
+        id_text: 'Selamat siang', 
+        phonetic: '[seh-LAH-mat SEE-ahng]' 
+      },
+      { 
+        id: 3, 
+        cat: 'greetings', 
+        catName: '👋 Greetings & Times', 
+        en: 'Good late afternoon', 
+        timeTag: '3:00pm – 6:30pm (Sunset)',
+        hint: 'Afternoon tea and sunset hours.', 
+        id_text: 'Selamat sore', 
+        phonetic: '[seh-LAH-mat SOH-ray]' 
+      },
+      { 
+        id: 4, 
+        cat: 'greetings', 
+        catName: '👋 Greetings & Times', 
+        en: 'Good evening / night', 
+        timeTag: '6:30pm onwards',
+        hint: 'Once the sun goes down completely.', 
+        id_text: 'Selamat malam', 
+        phonetic: '[seh-LAH-mat MAH-lahm]' 
+      },
+      { 
+        id: 5, 
+        cat: 'greetings', 
+        catName: '👋 Greetings & Times', 
+        en: 'See you later / Goodbye', 
+        timeTag: 'Friendly Farewell',
+        hint: 'Warm, natural way to sign off.', 
+        id_text: 'Sampai jumpa lagi', 
+        phonetic: '[SAHM-py JOOM-pah LAH-ghee]' 
+      },
+      { 
+        id: 6, 
+        cat: 'greetings', 
+        catName: '👋 Greetings & Times', 
+        en: 'Thank you very much', 
+        timeTag: 'Essential Manners',
+        hint: 'Tip: Add "Pak" or "Ibu" for staff!', 
+        id_text: 'Terima kasih banyak', 
+        phonetic: '[t\'ree-mah KAH-see BAHN-yahk]' 
+      },
+      { 
+        id: 7, 
+        cat: 'greetings', 
+        catName: '👋 Greetings & Times', 
+        en: "No worries / You're welcome", 
+        timeTag: 'Standard Reply',
+        hint: 'Literally means "same-same".', 
+        id_text: 'Sama-sama', 
+        phonetic: '[SAH-mah SAH-mah]' 
+      },
+      { 
+        id: 8, 
+        cat: 'greetings', 
+        catName: '👋 Greetings & Times', 
+        en: 'Excuse me / Sorry', 
+        timeTag: 'Polite Interjection',
+        hint: 'Permisi = passing by someone. Maaf = sorry.', 
+        id_text: 'Permisi / Maaf', 
+        phonetic: '[pehr-MEE-see / MAH-ahf]' 
+      },
+      { 
+        id: 9, 
+        cat: 'greetings', 
+        catName: '👋 Greetings & Times', 
+        en: 'Yes please', 
+        timeTag: 'Affirmative',
+        hint: 'Simple and universally clear.', 
+        id_text: 'Ya, terima kasih', 
+        phonetic: '[YAH, t\'ree-mah KAH-see]' 
+      },
+      { 
+        id: 10, 
+        cat: 'greetings', 
+        catName: '👋 Greetings & Times', 
+        en: 'No thank you', 
+        timeTag: 'Polite Refusal',
+        hint: 'Gentle and respectful refusal.', 
+        id_text: 'Tidak, terima kasih', 
+        phonetic: '[TEE-dahk, t\'ree-mah KAH-see]' 
+      },
+
+      // 2. INTRODUCTIONS & CHAT (10)
+      { 
+        id: 11, 
+        cat: 'intro', 
+        catName: '🤝 Introductions', 
+        en: 'My name is...', 
+        timeTag: 'Intro',
+        hint: 'E.g., "Nama saya Matt."', 
+        id_text: 'Nama saya...', 
+        phonetic: '[NAH-mah SAH-yah...]' 
+      },
+      { 
+        id: 12, 
+        cat: 'intro', 
+        catName: '🤝 Introductions', 
+        en: 'What is your name?', 
+        timeTag: 'Meeting Teens',
+        hint: 'For younger kids you can also say "Nama adik siapa?"', 
+        id_text: 'Siapa nama kamu?', 
+        phonetic: '[see-AH-pah NAH-mah KAH-moo?]' 
+      },
+      { 
+        id: 13, 
+        cat: 'intro', 
+        catName: '🤝 Introductions', 
+        en: 'How are ya? / How are you going?', 
+        timeTag: 'Aussie "How are ya"',
+        hint: 'Everyday check-in with staff & kids.', 
+        id_text: 'Apa kabar?', 
+        phonetic: '[AH-pah KAH-bahr?]' 
+      },
+      { 
+        id: 14, 
+        cat: 'intro', 
+        catName: '🤝 Introductions', 
+        en: 'I am doing well / Good mate!', 
+        timeTag: 'Positive reply',
+        hint: 'Literally means "good news".', 
+        id_text: 'Kabar baik', 
+        phonetic: '[KAH-bahr BYE-eek]' 
+      },
+      { 
+        id: 15, 
+        cat: 'intro', 
+        catName: '🤝 Introductions', 
+        en: 'Where are you from originally?', 
+        timeTag: 'Origin',
+        hint: 'Many kids at Widhya Asih come from Sumba or Flores!', 
+        id_text: 'Dari mana asal kamu?', 
+        phonetic: '[DAH-ree MAH-nah AH-sahl KAH-moo?]' 
+      },
+      { 
+        id: 16, 
+        cat: 'intro', 
+        catName: '🤝 Introductions', 
+        en: 'Are you from Bali?', 
+        timeTag: 'Island origin',
+        hint: 'Kids will love telling you their home island.', 
+        id_text: 'Apakah kamu berasal dari Bali?', 
+        phonetic: '[ah-PAH-kah KAH-moo behr-AH-sahl DAH-ree BAH-lee?]' 
+      },
+      { 
+        id: 17, 
+        cat: 'intro', 
+        catName: '🤝 Introductions', 
+        en: 'I am from Australia', 
+        timeTag: 'Visitor origin',
+        hint: 'Pronounced ow-STRAH-lee-ah.', 
+        id_text: 'Saya dari Australia', 
+        phonetic: '[SAH-yah DAH-ree ow-STRAH-lee-ah]' 
+      },
+      { 
+        id: 18, 
+        cat: 'intro', 
+        catName: '🤝 Introductions', 
+        en: 'Lovely to meet you!', 
+        timeTag: 'Warm greeting',
+        hint: 'Great handshake greeting.', 
+        id_text: 'Senang bertemu denganmu', 
+        phonetic: '[seh-NAHNG behr-TEH-moo dehng-AHN-moo]' 
+      },
+      { 
+        id: 19, 
+        cat: 'intro', 
+        catName: '🤝 Introductions', 
+        en: 'How old are you?', 
+        timeTag: 'Age question',
+        hint: 'Umur = age.', 
+        id_text: 'Berapa umur kamu?', 
+        phonetic: '[beh-RAH-pah OO-moor KAH-moo?]' 
+      },
+      { 
+        id: 20, 
+        cat: 'intro', 
+        catName: '🤝 Introductions', 
+        en: 'I am ... years old', 
+        timeTag: 'Sharing age',
+        hint: 'E.g., "Umur saya empat puluh tahun."', 
+        id_text: 'Umur saya ... tahun', 
+        phonetic: '[OO-moor SAH-yah ... TAH-hoon]' 
+      },
+
+      // 3. SCHOOL & DREAMS (10)
+      { 
+        id: 21, 
+        cat: 'school', 
+        catName: '🎒 School & Dreams', 
+        en: 'What grade are you in at school?', 
+        timeTag: 'Grade check',
+        hint: 'Kelas = grade / class year.', 
+        id_text: 'Kamu kelas berapa di sekolah?', 
+        phonetic: '[KAH-moo KEH-lahs beh-RAH-pah dee seh-KOH-lah?]' 
+      },
+      { 
+        id: 22, 
+        cat: 'school', 
+        catName: '🎒 School & Dreams', 
+        en: 'What is your favourite subject?', 
+        timeTag: 'Class interests',
+        hint: 'Favorite class / lessons.', 
+        id_text: 'Apa pelajaran favorit kamu?', 
+        phonetic: '[AH-pah peh-lah-JAH-rahn fah-voh-REET KAH-moo?]' 
+      },
+      { 
+        id: 23, 
+        cat: 'school', 
+        catName: '🎒 School & Dreams', 
+        en: 'I like English and Art', 
+        timeTag: 'Sharing favourites',
+        hint: 'Seni = art, Bahasa Inggris = English.', 
+        id_text: 'Saya suka Bahasa Inggris dan Seni', 
+        phonetic: '[SAH-yah SOO-kah bah-HAH-sah ING-grees dahn SEH-nee]' 
+      },
+      { 
+        id: 24, 
+        cat: 'school', 
+        catName: '🎒 School & Dreams', 
+        en: 'Who is your best mate here?', 
+        timeTag: 'Friendships',
+        hint: 'Sahabat = closest best friend.', 
+        id_text: 'Siapa sahabat terbaik kamu di sini?', 
+        phonetic: '[see-AH-pah sah-HAH-baht tehr-BYE-eek KAH-moo dee SEE-nee?]' 
+      },
+      { 
+        id: 25, 
+        cat: 'school', 
+        catName: '🎒 School & Dreams', 
+        en: 'What do you want to be when you finish school?', 
+        timeTag: 'Future dreams',
+        hint: 'Asking about ambition and careers.', 
+        id_text: 'Kamu mau jadi apa nanti?', 
+        phonetic: '[KAH-moo MOW JAH-dee AH-pah NAHN-tee?]' 
+      },
+      { 
+        id: 26, 
+        cat: 'school', 
+        catName: '🎒 School & Dreams', 
+        en: 'Do you have homework today?', 
+        timeTag: 'Study routine',
+        hint: 'PR (pe-er) = Pekerjaan Rumah (homework).', 
+        id_text: 'Apakah ada PR hari ini?', 
+        phonetic: '[ah-PAH-kah AH-dah PEY-EHR HAH-ree EE-nee?]' 
+      },
+      { 
+        id: 27, 
+        cat: 'school', 
+        catName: '🎒 School & Dreams', 
+        en: 'What time does school finish?', 
+        timeTag: 'Schedule',
+        hint: 'Jam berapa = What time?', 
+        id_text: 'Jam berapa sekolah selesai?', 
+        phonetic: '[JAHM beh-RAH-pah seh-KOH-lah seh-leh-SYE?]' 
+      },
+      { 
+        id: 28, 
+        cat: 'school', 
+        catName: '🎒 School & Dreams', 
+        en: 'Your English is really good!', 
+        timeTag: 'Huge encouragement',
+        hint: 'Teens love hearing positive feedback!', 
+        id_text: 'Bahasa Inggrismu bagus sekali!', 
+        phonetic: '[bah-HAH-sah ING-grees-moo BAH-goos seh-KAH-lee!]' 
+      },
+      { 
+        id: 29, 
+        cat: 'school', 
+        catName: '🎒 School & Dreams', 
+        en: 'Let’s practise together!', 
+        timeTag: 'Study invite',
+        hint: 'Ayo = Let\'s go / Come on.', 
+        id_text: 'Ayo kita latihan bersama!', 
+        phonetic: '[AH-yoh KEE-tah lah-TEE-hahn behr-SAH-mah!]' 
+      },
+      { 
+        id: 30, 
+        cat: 'school', 
+        catName: '🎒 School & Dreams', 
+        en: 'You are so smart / clever!', 
+        timeTag: 'Compliment',
+        hint: 'Pintar = smart/clever.', 
+        id_text: 'Kamu pintar sekali!', 
+        phonetic: '[KAH-moo PEEN-tahr seh-KAH-lee!]' 
+      },
+
+      // 4. NUMBERS & ESSENTIALS (10)
+      { 
+        id: 31, 
+        cat: 'numbers', 
+        catName: '🔢 Numbers & Essentials', 
+        en: 'Numbers: One to Five', 
+        timeTag: '1, 2, 3, 4, 5',
+        hint: 'Essential counting basics.', 
+        id_text: 'Satu, dua, tiga, empat, lima', 
+        phonetic: '[SAH-too, DOO-ah, TEE-gah, EHM-paht, LEE-mah]' 
+      },
+      { 
+        id: 32, 
+        cat: 'numbers', 
+        catName: '🔢 Numbers & Essentials', 
+        en: 'Numbers: Six to Ten', 
+        timeTag: '6, 7, 8, 9, 10',
+        hint: 'Essential counting basics.', 
+        id_text: 'Enam, tujuh, delapan, sembilan, sepuluh', 
+        phonetic: '[EH-nahm, TOO-joo, deh-LAH-pahn, sehm-BEE-lahn, seh-POO-loo]' 
+      },
+      { 
+        id: 33, 
+        cat: 'numbers', 
+        catName: '🔢 Numbers & Essentials', 
+        en: 'Hundred and Thousand (Rupiah keys)', 
+        timeTag: '100 & 1,000',
+        hint: 'Seratus = 100, Seribu = 1,000.', 
+        id_text: 'Seratus & Seribu', 
+        phonetic: '[seh-RAH-toos & seh-REE-boo]' 
+      },
+      { 
+        id: 34, 
+        cat: 'numbers', 
+        catName: '🔢 Numbers & Essentials', 
+        en: 'How much does this cost?', 
+        timeTag: 'Warung & Market',
+        hint: 'Harga = price.', 
+        id_text: 'Berapa harganya?', 
+        phonetic: '[beh-RAH-pah hahr-GAH-nyah?]' 
+      },
+      { 
+        id: 35, 
+        cat: 'numbers', 
+        catName: '🔢 Numbers & Essentials', 
+        en: 'Could I please get some drinking water?', 
+        timeTag: 'Hydration',
+        hint: 'Air putih = fresh drinking water.', 
+        id_text: 'Boleh minta air putih?', 
+        phonetic: '[BOH-lay MEEN-tah EYE-eer POO-tee?]' 
+      },
+      { 
+        id: 36, 
+        cat: 'numbers', 
+        catName: '🔢 Numbers & Essentials', 
+        en: 'Where is the toilet / bathroom?', 
+        timeTag: 'Essential',
+        hint: 'Kamar kecil or toilet are understood everywhere.', 
+        id_text: 'Di mana kamar kecil / toilet?', 
+        phonetic: '[dee MAH-nah KAH-mahr keh-CHEEL / TOY-leht?]' 
+      },
+      { 
+        id: 37, 
+        cat: 'numbers', 
+        catName: '🔢 Numbers & Essentials', 
+        en: 'Could you give me a hand please?', 
+        timeTag: 'Asking help',
+        hint: 'Tolong = please / help.', 
+        id_text: 'Tolong bantu saya', 
+        phonetic: '[TOH-lohng BAHN-too SAH-yah]' 
+      },
+      { 
+        id: 38, 
+        cat: 'numbers', 
+        catName: '🔢 Numbers & Essentials', 
+        en: 'Got it! / I understand', 
+        timeTag: 'Comprehension',
+        hint: 'Great confirmation phrase.', 
+        id_text: 'Saya mengerti / paham', 
+        phonetic: '[SAH-yah mehng-EHR-tee / PAH-hahm]' 
+      },
+      { 
+        id: 39, 
+        cat: 'numbers', 
+        catName: '🔢 Numbers & Essentials', 
+        en: 'I don’t quite understand yet', 
+        timeTag: 'Need repetition',
+        hint: 'Belum = not yet.', 
+        id_text: 'Saya belum paham', 
+        phonetic: '[SAH-yah BEH-loom PAH-hahm]' 
+      },
+      { 
+        id: 40, 
+        cat: 'numbers', 
+        catName: '🔢 Numbers & Essentials', 
+        en: 'Could you speak a little slower please?', 
+        timeTag: 'Pacing help',
+        hint: 'Pelan-pelan = slowly.', 
+        id_text: 'Bisa bicara pelan-pelan?', 
+        phonetic: '[BEE-sah bee-CHAH-rah peh-LAHN peh-LAHN?]' 
+      },
+
+      // 5. FUN & WIDHYA ASIH LIFE (10)
+      { 
+        id: 41, 
+        cat: 'social', 
+        catName: '🏡 Widhya Asih Life', 
+        en: 'What’s your favourite Indonesian food?', 
+        timeTag: 'Food Chat',
+        hint: 'Nasi goreng, ayam betutu, babi guling, tempe!', 
+        id_text: 'Kamu suka makan apa?', 
+        phonetic: '[KAH-moo SOO-kah MAH-kahn AH-pah?]' 
+      },
+      { 
+        id: 42, 
+        cat: 'social', 
+        catName: '🏡 Widhya Asih Life', 
+        en: 'This food is delicious! (Bali: Jaen gati!)', 
+        timeTag: 'Food Praise',
+        hint: 'Balinese locals will love if you say "Jaen gati!"', 
+        id_text: 'Makanan ini enak sekali! (Jaen gati!)', 
+        phonetic: '[mah-KAHN-ahn EE-nee EH-nahk seh-KAH-lee!]' 
+      },
+      { 
+        id: 43, 
+        cat: 'social', 
+        catName: '🏡 Widhya Asih Life', 
+        en: 'Let’s eat together!', 
+        timeTag: 'Mealtime',
+        hint: 'Eating together as a family home.', 
+        id_text: 'Ayo makan bersama!', 
+        phonetic: '[AH-yoh MAH-kahn behr-SAH-mah!]' 
+      },
+      { 
+        id: 44, 
+        cat: 'social', 
+        catName: '🏡 Widhya Asih Life', 
+        en: 'Can we grab a photo together?', 
+        timeTag: 'Photos',
+        hint: '"Foto bareng" is casual teen slang for photo together.', 
+        id_text: 'Boleh foto bareng?', 
+        phonetic: '[BOH-lay FOH-toh BAH-rehng?]' 
+      },
+      { 
+        id: 45, 
+        cat: 'social', 
+        catName: '🏡 Widhya Asih Life', 
+        en: 'Do you play sports or music?', 
+        timeTag: 'Hobbies',
+        hint: 'Main = play (instruments or sports).', 
+        id_text: 'Apakah kamu suka olahraga atau main musik?', 
+        phonetic: '[ah-PAH-kah KAH-moo SOO-kah oh-lah-RAH-gah AH-tow MY-een MOO-seek?]' 
+      },
+      { 
+        id: 46, 
+        cat: 'social', 
+        catName: '🏡 Widhya Asih Life', 
+        en: 'Where is your home village / town?', 
+        timeTag: 'Family Origins',
+        hint: 'Kampung halaman = home village/island.', 
+        id_text: 'Di mana kampung halamanmu?', 
+        phonetic: '[dee MAH-nah KAHM-poong hah-LAH-mahn-moo?]' 
+      },
+      { 
+        id: 47, 
+        cat: 'social', 
+        catName: '🏡 Widhya Asih Life', 
+        en: 'You guys are so kind!', 
+        timeTag: 'Gratitude to Home',
+        hint: 'Say this to the carers and teens.', 
+        id_text: 'Kalian baik sekali', 
+        phonetic: '[KAH-lee-ahn BYE-eek seh-KAH-lee]' 
+      },
+      { 
+        id: 48, 
+        cat: 'social', 
+        catName: '🏡 Widhya Asih Life', 
+        en: 'See you tomorrow mate!', 
+        timeTag: 'Next day goodbye',
+        hint: 'Besok = tomorrow.', 
+        id_text: 'Sampai jumpa besok!', 
+        phonetic: '[SAHM-py JOOM-pah BEH-sohk!]' 
+      },
+      { 
+        id: 49, 
+        cat: 'social', 
+        catName: '🏡 Widhya Asih Life', 
+        en: 'Travel safely / Take care on the road', 
+        timeTag: 'Farewell Blessing',
+        hint: 'Said whenever someone departs by scooter or car.', 
+        id_text: 'Hati-hati di jalan', 
+        phonetic: '[HAH-tee HAH-tee dee JAH-lahn]' 
+      },
+      { 
+        id: 50, 
+        cat: 'social', 
+        catName: '🏡 Widhya Asih Life', 
+        en: 'Until we meet again!', 
+        timeTag: 'Heartfelt Goodbye',
+        hint: 'Warm parting word before heading back to Oz.', 
+        id_text: 'Sampai bertemu lagi!', 
+        phonetic: '[SAHM-py behr-TEH-moo LAH-ghee!]' 
+      }
+    ];
+
+    // State Variables
+    let currentAppMode = 'flashcard'; // 'flashcard' or 'directory'
+    let selectedCat = 'all';
+    let cardDirection = 'en_to_id'; // 'en_to_id' (Speaking) or 'id_to_en' (Listening)
+    let activeDeck = [];
+    let currentDeckIndex = 0;
+    let cardIsFlipped = false;
+    let countGotIt = 0;
+    let countMiss = 0;
+
+    // View Switching
+    function switchAppMode(mode) {
+      currentAppMode = mode;
+      const flashcardSec = document.getElementById('flashcardView');
+      const directorySec = document.getElementById('directoryView');
+      const btnTabFlash = document.getElementById('tabFlashcardMode');
+      const btnTabDir = document.getElementById('tabDirectoryMode');
+
+      if (mode === 'flashcard') {
+        flashcardSec.style.display = 'flex';
+        directorySec.style.display = 'none';
+        btnTabFlash.classList.add('active');
+        btnTabDir.classList.remove('active');
+      } else {
+        flashcardSec.style.display = 'none';
+        directorySec.style.display = 'flex';
+        btnTabFlash.classList.remove('active');
+        btnTabDir.classList.add('active');
+        renderDirectoryList();
+      }
+    }
+
+    // Category Selector
+    function selectCategory(catKey) {
+      selectedCat = catKey;
+      const tabs = ['all', 'greetings', 'intro', 'school', 'numbers', 'social'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('cat-' + t);
+        if (btn) {
+          if (t === catKey) btn.classList.add('active');
+          else btn.classList.remove('active');
+        }
+      });
+
+      if (currentAppMode === 'flashcard') {
+        buildDeck(catKey);
+        renderCard();
+      } else {
+        renderDirectoryList();
+      }
+    }
+
+    // Direction Toggle: English-to-Indonesian vs Indonesian-to-English
+    function toggleCardDirection() {
+      if (cardDirection === 'en_to_id') {
+        cardDirection = 'id_to_en';
+        document.getElementById('directionLabel').textContent = "🇮🇩 Indo ➔ 🇦🇺 English";
+        showToast("Switched: Listening & Reading Comprehension Mode");
+      } else {
+        cardDirection = 'en_to_id';
+        document.getElementById('directionLabel').textContent = "🇦🇺 English ➔ 🇮🇩 Indo";
+        showToast("Switched: Active Speaking Practice Mode");
+      }
+      renderCard();
+    }
+
+    /* ================= FLASHCARD CONTROLS ================= */
+    function shuffleArray(arr) {
+      const copy = arr.slice();
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = copy[i];
+        copy[i] = copy[j];
+        copy[j] = temp;
+      }
+      return copy;
+    }
+
+    function buildDeck(catKey) {
+      if (catKey === 'all') {
+        activeDeck = PHRASES.slice();
+      } else {
+        activeDeck = PHRASES.filter(p => p.cat === catKey);
+      }
+      currentDeckIndex = 0;
+      cardIsFlipped = false;
+      countGotIt = 0;
+      countMiss = 0;
+      updateToolbarStats();
+      showCardFrame();
+    }
+
+    function updateToolbarStats() {
+      document.getElementById('valGotIt').textContent = countGotIt;
+      document.getElementById('valMiss').textContent = countMiss;
+      const total = activeDeck.length;
+      const current = Math.min(currentDeckIndex + 1, total);
+      document.getElementById('deckProgressText').textContent = `Card ${current} of ${total}`;
+    }
+
+    function renderCard() {
+      if (currentDeckIndex >= activeDeck.length) {
+        showCompletionView();
+        return;
+      }
+
+      cardIsFlipped = false;
+      const item = activeDeck[currentDeckIndex];
+
+      document.getElementById('fcCategoryBadge').textContent = item.catName;
+      document.getElementById('fcTapBadge').style.display = 'inline-block';
+      document.getElementById('fcAnswerBox').style.display = 'none';
+      document.getElementById('fcFlipBtn').style.display = 'flex';
+      document.getElementById('fcGradingRow').style.display = 'none';
+
+      if (cardDirection === 'en_to_id') {
+        // Front: English Prompt
+        document.getElementById('fcSideLabel').textContent = "Say in Indonesian";
+        document.getElementById('fcPrimaryText').textContent = `"${item.en}"`;
+        document.getElementById('fcHintText').textContent = item.timeTag ? `⏰ ${item.timeTag} • ${item.hint}` : item.hint;
+        
+        // Back: Indonesian Answer
+        document.getElementById('fcTargetText').textContent = item.id_text;
+        document.getElementById('fcPhoneticText').textContent = `${item.phonetic} • Aussie Guide`;
+      } else {
+        // Front: Indonesian Prompt
+        document.getElementById('fcSideLabel').textContent = "Listen & Understand";
+        document.getElementById('fcPrimaryText').textContent = item.id_text;
+        document.getElementById('fcHintText').textContent = `${item.phonetic} • Tap audio to hear`;
+        
+        // Back: English Meaning
+        document.getElementById('fcTargetText').textContent = `“${item.en}”`;
+        document.getElementById('fcPhoneticText').textContent = item.timeTag ? `⏰ ${item.timeTag} • ${item.hint}` : item.hint;
+      }
+
+      updateToolbarStats();
+    }
+
+    function handleCardTap(e) {
+      if (e.target.closest('button')) return;
+      if (!cardIsFlipped) revealCard(e);
+    }
+
+    function revealCard(e) {
+      if (e) e.stopPropagation();
+      cardIsFlipped = true;
+
+      document.getElementById('fcTapBadge').style.display = 'none';
+      document.getElementById('fcAnswerBox').style.display = 'block';
+      document.getElementById('fcFlipBtn').style.display = 'none';
+      document.getElementById('fcGradingRow').style.display = 'grid';
+
+      // Automatically speak the Indonesian pronunciation on card reveal
+      const card = activeDeck[currentDeckIndex];
+      speakIndonesian(card.id_text, 0.85);
+    }
+
+    function gradeAnswer(gotIt, e) {
+      if (e) e.stopPropagation();
+      if (gotIt) {
+        countGotIt++;
+      } else {
+        countMiss++;
+        activeDeck.push(activeDeck[currentDeckIndex]); // Re-queue missed card for review
+      }
+      currentDeckIndex++;
+      renderCard();
+    }
+
+    function speakCurrentCard(rate, e) {
+      if (e) e.stopPropagation();
+      if (currentDeckIndex < activeDeck.length) {
+        speakIndonesian(activeDeck[currentDeckIndex].id_text, rate);
+      }
+    }
+
+    function shuffleActiveDeck() {
+      activeDeck = shuffleArray(activeDeck);
+      currentDeckIndex = 0;
+      cardIsFlipped = false;
+      renderCard();
+      showToast("Deck shuffled! 🔀");
+    }
+
+    function resetActiveDeck() {
+      buildDeck(selectedCat);
+      renderCard();
+      showToast("Scores & deck reset 🔄");
+    }
+
+    function showCardFrame() {
+      document.getElementById('flashcardElement').style.display = 'flex';
+      document.getElementById('fcCompletePanel').style.display = 'none';
+    }
+
+    function showCompletionView() {
+      document.getElementById('flashcardElement').style.display = 'none';
+      document.getElementById('fcCompletePanel').style.display = 'flex';
+
+      const total = countGotIt + countMiss;
+      const accuracy = total > 0 ? Math.round((countGotIt / total) * 100) : 100;
+
+      document.getElementById('statMastered').textContent = countGotIt;
+      document.getElementById('statMissed').textContent = countMiss;
+      document.getElementById('statAccuracy').textContent = accuracy + '%';
+    }
+
+    /* ================= PHRASEBOOK DIRECTORY ================= */
+    function renderDirectoryList() {
+      const container = document.getElementById('phraseListWrap');
+      const query = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+
+      let results = PHRASES;
+      if (selectedCat !== 'all') {
+        results = results.filter(p => p.cat === selectedCat);
+      }
+
+      if (query.length > 0) {
+        results = results.filter(p => 
+          p.en.toLowerCase().includes(query) ||
+          p.id_text.toLowerCase().includes(query) ||
+          p.phonetic.toLowerCase().includes(query) ||
+          (p.timeTag && p.timeTag.toLowerCase().includes(query)) ||
+          p.hint.toLowerCase().includes(query)
+        );
+      }
+
+      if (results.length === 0) {
+        container.innerHTML = `
+          <div class="empty-search">
+            <div style="font-size:24px; margin-bottom:4px;">🔍</div>
+            No phrases found matching "${escapeHtml(query)}". Try another word!
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      results.forEach(item => {
+        const safeIdText = item.id_text.replace(/'/g, "\\'");
+        html += `
+          <div class="phrase-card">
+            <div class="phrase-card-content">
+              <div class="id-title-row">
+                <span class="id-heading">${escapeHtml(item.id_text)}</span>
+                ${item.timeTag ? `<span class="id-timeTag">${escapeHtml(item.timeTag)}</span>` : ''}
+              </div>
+              <div class="aussie-phonetic-sub">${escapeHtml(item.phonetic)}</div>
+              <div class="en-sub">“${escapeHtml(item.en)}”</div>
+              <span class="cat-micro-pill">${escapeHtml(item.catName)}</span>
+            </div>
+            <div class="phrase-actions">
+              <button class="btn-say-action" onclick="speakIndonesian('${safeIdText}', 0.85, this)">
+                <span>🔊</span> <span>Speak</span>
+              </button>
+              <button class="btn-slow-action" onclick="speakIndonesian('${safeIdText}', 0.65, this)">
+                <span>🐢</span> <span>Slow</span>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function handleSearch() {
+      renderDirectoryList();
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    /* ================= TEXT TO SPEECH ENGINE ================= */
+    function speakIndonesian(textToSpeak, speechRate, triggerBtn) {
+      if (!('speechSynthesis' in window)) {
+        showToast("Audio playback not supported in this browser.");
+        return;
+      }
+
+      try {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+        utterance.rate = speechRate || 0.85;
+        utterance.lang = 'id-ID';
+
+        const voices = window.speechSynthesis.getVoices();
+        if (voices && voices.length > 0) {
+          const indoVoice = voices.find(v => v.lang.includes('id') || v.lang.includes('ID'));
+          if (indoVoice) utterance.voice = indoVoice;
+        }
+
+        if (triggerBtn) {
+          const originalText = triggerBtn.innerHTML;
+          triggerBtn.innerHTML = `<span>💬</span> <span>...</span>`;
+          utterance.onend = utterance.onerror = function() {
+            triggerBtn.innerHTML = originalText;
+          };
+        }
+
+        window.speechSynthesis.speak(utterance);
+      } catch (e) {
+        showToast("Audio engine busy, try tapping once more.");
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotification');
+      toast.textContent = msg;
+      toast.style.opacity = '1';
+      setTimeout(() => {
+        toast.style.opacity = '0';
+      }, 2200);
+    }
+
+    // App Initialization
+    (function init() {
+      buildDeck('all');
+      renderCard();
+      renderDirectoryList();
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.getVoices();
+      }
+    })();
+  </script>
+</body>
+</html>
